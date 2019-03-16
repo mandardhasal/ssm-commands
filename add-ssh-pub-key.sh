@@ -27,10 +27,10 @@ if [ -z "$HOST_USER" ] ||  [ -z "$PUB_KEY_USER_NAME" ] || [ -z "$KEY_CONTENT" ];
 fi;
 
 AUTH_KEY_PATH=$(eval echo "~$HOST_USER")/.ssh/authorized_keys; 
-SEARCH="~"${PUB_KEY_USER_NAME}'@qi~'
+SEARCH=' '${PUB_KEY_USER_NAME}'@qi\\>'
 
 if test -f ${AUTH_KEY_PATH}; then 
-	if grep -e " ${SEARCH}" ${AUTH_KEY_PATH}; then 
+	if grep -e "${SEARCH}" ${AUTH_KEY_PATH}; then 
 		echo "Pub key for $PUB_KEY_USER_NAME already exsit"; 
 	else  echo  >> ${AUTH_KEY_PATH} && echo $KEY_CONTENT >> ${AUTH_KEY_PATH} && echo "Pub key for $PUB_KEY_USER_NAME added successfully"; 
 	fi; 
