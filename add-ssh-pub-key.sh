@@ -1,5 +1,5 @@
 #!/bin/bash
-while getopts "u:c:k:" OPTION
+while getopts "u:c:k:t:" OPTION
 do
 	case $OPTION in
 		u)
@@ -10,6 +10,9 @@ do
 			;;
 		c)
 			KEY_CONTENT=$OPTARG
+			;;
+		t) 
+			TIMEOUT=$OPTARG
 			;;
 		\?)
 			echo "u=host user, c=contents of file, k=public key user name";
@@ -27,7 +30,7 @@ if [ -z "$HOST_USER" ] ||  [ -z "$PUB_KEY_USER_NAME" ] || [ -z "$KEY_CONTENT" ];
 fi;
 
 AUTH_KEY_PATH=$(eval echo "~$HOST_USER")/.ssh/authorized_keys; 
-SEARCH=' '${PUB_KEY_USER_NAME}'@qi\\>'
+SEARCH=" "${PUB_KEY_USER_NAME}'@qi\\>'
 
 if test -f ${AUTH_KEY_PATH}; then 
 	if grep -e "${SEARCH}" ${AUTH_KEY_PATH}; then 
@@ -36,3 +39,11 @@ if test -f ${AUTH_KEY_PATH}; then
 	fi; 
 else echo "${AUTH_KEY_PATH} file does not exist" && exit 1; 
 fi;
+
+
+if [ -z "$TIMEOUT" ]; then
+	echo "\\ntimeout not set.. key will stay forever....";
+	exit 0;
+fi;
+
+echo "curl -s https://raw.githubusercontent.com/mandardhasal/ssm-commands/master/remove-ssh-pub-key.sh -o /tmp/remove-ssh-pub-key.sh && chmod +x /tmp/remove-ssh-pub-key.sh && /tmp/remove-ssh-pub-key -u $HOST_USER -k $PUB_KEY_USER_NAME" | at -m now + $TIMEOUT minutes
