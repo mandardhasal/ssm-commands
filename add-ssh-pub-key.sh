@@ -46,4 +46,4 @@ if [ -z "$TIMEOUT" ]; then
 	exit 0;
 fi;
 
-echo "curl -s https://raw.githubusercontent.com/mandardhasal/ssm-commands/master/remove-ssh-pub-key.sh -o /tmp/remove-ssh-pub-key.sh && chmod +x /tmp/remove-ssh-pub-key.sh && /tmp/remove-ssh-pub-key -u $HOST_USER -k $PUB_KEY_USER_NAME" | at -m now + $TIMEOUT minutes
+echo "curl -s https://raw.githubusercontent.com/mandardhasal/ssm-commands/master/remove-ssh-pub-key.sh -o /tmp/remove-ssh-pub-key.sh && chmod +x /tmp/remove-ssh-pub-key.sh && /tmp/remove-ssh-pub-key.sh -u $HOST_USER -k $PUB_KEY_USER_NAME && rm -rf /tmp/remove-ssh-pub-key.sh" | at -m now + $TIMEOUT minutes
